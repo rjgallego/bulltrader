@@ -1,0 +1,18 @@
+#sidebar-div{
+    height: 100vh;
+    z-index: 1
+}
+
+.sidebar-nav{
+    height: 0%;
+    width: 100%;
+    transition: height 1s
+}
+
+.visible{
+    height: 100%;
+}
+
+#sidebar-icon{
+    margin-left: 10px;
+}
