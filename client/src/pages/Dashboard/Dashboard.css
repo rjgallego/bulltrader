@@ -1,0 +1,12 @@
+#table-div{
+    height: 250px;
+    overflow-y: scroll;
+}
+
+#table-div::-webkit-scrollbar{
+    display: none;
+}
+
+#dashboard-container{
+    right: 0
+}
