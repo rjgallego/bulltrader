@@ -1,0 +1,46 @@
+#stockbar-div{
+    width: 20vw;
+    left: 180px;
+    z-index: 0;
+    margin: 0;
+    top: 40px;
+}
+.stock-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-content: center;
+}
+.stock-div:hover{
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.stock-name{
+    text-align: center;
+}
+
+.name-text{
+    margin: 0;
+    font-size: 12px;
+}
+
+.shares-text{
+    text-align: center;
+}
+
+.shares{
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+.shares-number{
+    margin: 0;
+    padding: 0;
+}
+
+.value-div{
+    width: 6vw;
+    font-size: 0.85em;
+    text-align: center;
+    border-radius: 5px;
+}
