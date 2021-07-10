@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import SideBar from '../../components/SideBar/SideBar';
 import StockTable from './StockTable';
+import SellModel from '../../components/SellModel/SellModel';
 import { Container, Row, Col, Button} from 'react-bootstrap';
 import Chart from 'react-google-charts'
 
@@ -45,6 +46,7 @@ const data = {
 }
 
 const Dashboard = () => {
+    const [show, setShow] = useState(false);
 
     const createChartData = () => {
         const chartData = []
@@ -52,6 +54,8 @@ const Dashboard = () => {
         data.stocks.forEach(stock => chartData.push([stock.name, stock.shares]))
         return chartData
     }
+
+    const handleClick = () => setShow(true);
 
     return (
         <div id="dashboard-div">
@@ -73,7 +77,7 @@ const Dashboard = () => {
                                 <h2 className="mt-0">{data.cash}</h2>
                             </Col>
                             <Col className="text-center d-flex align-items-center">
-                                <Button variant="success" className="w-75 h-75">Buy</Button>
+                                <Button variant="success" className="w-75 h-75" onClick={handleClick}>Buy</Button>
                             </Col>
                         </Row>
                     </Col>
@@ -105,7 +109,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </Container>
-            
+            <SellModel show={show} setShow={setShow}/>
         </div>
     )
 }
