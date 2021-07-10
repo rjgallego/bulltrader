@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import SideBar from '../../components/SideBar/SideBar';
 import StockTable from './StockTable';
-import SellModel from '../../components/SellModel/SellModel';
+import BuyModal from '../../components/BuyModal/BuyModal';
 import { Container, Row, Col, Button} from 'react-bootstrap';
 import Chart from 'react-google-charts';
 import {useDispatch} from 'react-redux';
@@ -114,7 +114,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </Container>
-            <SellModel />
+            <BuyModal />
         </div>
     )
 }
