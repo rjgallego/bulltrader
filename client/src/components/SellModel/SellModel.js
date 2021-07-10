@@ -1,8 +1,17 @@
 import React from 'react';
 import {Modal, Button, Form} from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 
-const SellModel = ({show, setShow}) => {
-    const handleClose = () => setShow(false)
+const SellModel = () => {
+    const dispatch = useDispatch();
+
+    const handleClose = () => {
+        dispatch({
+            type: 'HIDE'
+        })
+    }
+    const show = useSelector(state => state.buyReducer);
+    
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
