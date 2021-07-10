@@ -13,9 +13,15 @@ app = Flask(__name__, static_folder='../client/build', static_url_path='/')
 app.config['IEX_TOKEN'] = os.environ.get('IEX_TOKEN')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')    
 
 db = SQLAlchemy(app)
+
+from .auth import auth
+
 jwt = JWTManager(app)
+
+app.register_blueprint(auth, url_prefix='/api')
 
 @app.route('/')
 def home_page():
