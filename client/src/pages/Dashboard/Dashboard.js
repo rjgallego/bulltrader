@@ -4,7 +4,8 @@ import SideBar from '../../components/SideBar/SideBar';
 import StockTable from './StockTable';
 import SellModel from '../../components/SellModel/SellModel';
 import { Container, Row, Col, Button} from 'react-bootstrap';
-import Chart from 'react-google-charts'
+import Chart from 'react-google-charts';
+import {useDispatch} from 'react-redux';
 
 import './Dashboard.css'
 
@@ -46,7 +47,7 @@ const data = {
 }
 
 const Dashboard = () => {
-    const [show, setShow] = useState(false);
+    const dispatch = useDispatch()
 
     const createChartData = () => {
         const chartData = []
@@ -55,7 +56,11 @@ const Dashboard = () => {
         return chartData
     }
 
-    const handleClick = () => setShow(true);
+    const handleClick = () => {
+        dispatch({
+            type: 'SHOW'
+        })
+    }
 
     return (
         <div id="dashboard-div">
@@ -109,7 +114,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </Container>
-            <SellModel show={show} setShow={setShow}/>
+            <SellModel />
         </div>
     )
 }
