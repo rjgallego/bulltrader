@@ -18,10 +18,12 @@ app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
 db = SQLAlchemy(app)
 
 from .auth import auth
+from .views import views
 
 jwt = JWTManager(app)
 
 app.register_blueprint(auth, url_prefix='/api')
+app.register_blueprint(views, url_prefix='/api')
 
 @app.route('/')
 def home_page():
