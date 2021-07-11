@@ -22,7 +22,7 @@ class AccountModel(db.Model):
     stocks = db.relationship('StockModel', backref='account')
     
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<account_id {}>'.format(self.id)
 
 class StockModel(db.Model):
     __tablename__ = 'stocks'
@@ -32,4 +32,4 @@ class StockModel(db.Model):
     acct_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<stock_id {}>'.format(self.id)
