@@ -11,6 +11,7 @@ flask-sqlalchemy = "*"
 gunicorn = "*"
 python-dotenv = "*"
 flask-jwt-extended = "*"
+requests = "*"
 
 [dev-packages]
 
