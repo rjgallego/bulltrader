@@ -31,10 +31,10 @@ const Home = () => {
                         <Col>
                             <Form noValidate validated={validated} onSubmit={handleSubmit}
                                 className='bg-light h-100 d-flex flex-column justify-content-center'>
-                                <h2 className='text-center mb-5'>Welcome to Stock Trader</h2>
+                                <h2 className='text-center mb-5'>Welcome to Bull Trader</h2>
                                 <h5 className='text-center mb-4'>Please Sign In</h5>
-                                <Form.Control required className="w-75 mx-auto mb-3" type="email" placeholder="Enter Email" />
-                                <Form.Control required className="w-75 mx-auto mb-4" type="password" placeholder=" Enter Password" />
+                                <Form.Control required className="w-75 mx-auto mb-3" type="email" placeholder="Enter email" />
+                                <Form.Control required className="w-75 mx-auto mb-4" type="password" placeholder=" Enter password" />
                                 <Form.Group as={Row} className="d-flex flex-column">
                                     <Button className="w-50 mx-auto mb-2" variant="success" type="submit">Home</Button>
                                     <Button href="/register" className="w-50 mx-auto" variant="success">Register</Button>
