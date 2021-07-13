@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {Form, Row, Col, Button} from 'react-bootstrap'
-import NavBar from '../../components/NavBar/NavBar';
+import NavBar from '../../components/NavBar/NavBar'
 import {Redirect} from 'react-router-dom'
+import axios from 'axios'
 
 const Register = () => {
     const [validated, setValidated] = useState(false);
@@ -47,10 +48,21 @@ const Register = () => {
             email: email,
             password: password
         }
+
+        axios.post('/api/register', data)
+            .then(response => {
+                if(response.data.error){
+                    event.stopPropagation();
+                    setErrorMessage(response.data.error)
+                } else {
+                    setRedirect(true)
+                }
+            })
+
     }
 
     if(redirect){
-        return <Redirect to="/login" />
+        return <Redirect to="/" />
     }
 
     return (
@@ -60,7 +72,7 @@ const Register = () => {
                 <Form className="bg-light p-5" noValidate validated={validated} onSubmit={handleSubmit}>
                     <h2 className="mb-4 text-center">Sign Up</h2>
                     {
-                        errorMessage ? <p className="text-center text-danger">Error</p> : ''
+                        errorMessage ? <p className="text-center text-danger">{errorMessage}</p> : ''
                     }
                     <Form.Group as={Row} controlId="formGroupFirstName">
                         <Form.Label column>First Name:</Form.Label>
