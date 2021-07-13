@@ -1,5 +1,4 @@
 const buyReducer = (state=false, action) => {
-    console.log(action.type)
     switch(action.type){
         case 'SHOW':
             return true
