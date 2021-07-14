@@ -7,7 +7,7 @@ import os
 import decimal
 
 views = Blueprint('views', __name__)
-url = 'https://cloud.iexapis.com/stable/stock/'
+url = os.environ.get('IEX_URL')
 token =  os.environ.get('IEX_TOKEN')
 
 @views.route('/stocks/<user_id>', methods=["GET"])
@@ -38,7 +38,7 @@ def get_stocks(user_id=0):
         })
 
 def get_stock_info(stock):
-    r = requests.get(url + stock.symbol + '/quote?token=' + token)
+    r = requests.get(url + '/stock/' + stock.symbol + '/quote?token=' + token)
     increase = r.json()['latestPrice'] - r.json()['previousClose'] > 0
     return {
         'symbol': stock.symbol,
@@ -115,7 +115,26 @@ def sell():
             success="All shares sold"
         )
 
+@views.route('/search/<search>', methods=["GET"])
+@jwt_required()
+def search(search=""):
+    if request.method == 'GET':
+        r = requests.get(url + '/search/' + search + '?token=' + token)
+        return jsonify(
+            search_results=r.json()
+        )
+
+@views.route('/stock/<symbol>', methods=["GET"])
+@jwt_required()
+def get_stock(symbol=""):
+    if request.method == 'GET':
+        r = requests.get(url + '/stock/' + symbol + '/quote?token=' + token)
+        return jsonify(
+            stock_info=r.json()
+        )
+
+
 def get_stock_value(symbol, shares):
-    r = requests.get(url + symbol + '/quote?token=' + token)
+    r = requests.get(url + '/stock/' + symbol + '/quote?token=' + token)
     return r.json()['latestPrice'] * shares
 
