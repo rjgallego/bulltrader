@@ -16,7 +16,7 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.userReducer)
     const [reroute, setReroute] = useState(false)
-    //const [token, setToken] = useState(token)
+    const [token, setToken] = useState(sessionStorage.getItem('token'))
 
     useEffect(() => {
         setUserInfo()
@@ -28,7 +28,6 @@ const Dashboard = () => {
     });
 
     const setUserInfo = () => {
-        const token = sessionStorage.getItem('token')
         const userId = jwt_decode(token).sub
 
         const options = {
