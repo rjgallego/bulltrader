@@ -6,10 +6,14 @@ import {Row} from 'react-bootstrap'
 
 const BuyModal = () => {
     const dispatch = useDispatch();
-    const url = 'https://cloud.iexapis.com/stable/search'
-    const token = 'pk_2c889b8c845e4ac9ab45405424391e5e'
 
-    const availableCash = useSelector(state => state.userReducer.balance)
+    const options = {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`
+        }
+    }
+
+    const availableCash = useSelector(state => state.userReducer.user.balance)
     const show = useSelector(state => state.buyReducer);
 
     const [selectedStock, setSelectedStock] = useState(null)
@@ -17,8 +21,6 @@ const BuyModal = () => {
     const [totalCost, setTotalCost] = useState(0.0)
     const [disabled, setDisabled] = useState(true)
     const [error, setError] = useState(null)
-
-    console.log(availableCash)
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -31,18 +33,22 @@ const BuyModal = () => {
         })
     }
 
-
     const handleSearch = (event) => {
-        axios.get(`${url}/${event.target.value}/?token=${token}`)
+        axios.get(`api/search/${event.target.value}`, options)
             .then(response => {
-                setSearchResults(response.data)
+                setSearchResults(response.data.search_results)
             })
     }
 
     const handleShares = (event) => {
+        if(event.target.value.length == 0){
+            setTotalCost(0.0)
+            return
+        }
+
         const totalCost = parseFloat(event.target.value) * parseFloat(selectedStock.price)
         setTotalCost(totalCost)
-        if(totalCost > availableCash){
+        if(totalCost > parseFloat(availableCash)){
             setDisabled(true)
             setError("Not enough cash to buy shares")
             return
@@ -52,12 +58,12 @@ const BuyModal = () => {
     }
 
     const selectStock = (event) => {
-        axios.get(`https://cloud.iexapis.com/stable/stock/${event.target.id}/quote?token=${token}`)
+        axios.get(`/api/stock/${event.target.id}`, options)
             .then(response => {
                 setSelectedStock({
-                    symbol: response.data.symbol,
-                    name: response.data.companyName,
-                    price: response.data.latestPrice
+                    symbol: response.data.stock_info.symbol,
+                    name: response.data.stock_info.companyName,
+                    price: response.data.stock_info.latestPrice
                 })
             })
         
@@ -92,7 +98,7 @@ const BuyModal = () => {
                               placeholder="Number of Shares" 
                               className="mt-1"
                               onChange={handleShares}/>
-                    <Form.Label>Total Cost: {totalCost}</Form.Label>
+                    <Form.Label className="mt-3">Total Cost: {formatter.format(totalCost)}</Form.Label>
                 </Form>
         )
     }
@@ -114,7 +120,7 @@ const BuyModal = () => {
             <Modal.Header closeButton>
                 <Modal.Title>Buy Stock</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="mx-auto w-75">
                     {
                         selectedStock ? buyForm() : searchForm()
 
