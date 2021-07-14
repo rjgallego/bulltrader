@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from backend import db
 from flask_jwt_extended import jwt_required
-from .models import StockModel, AccountModel
+from .models import StockModel, AccountModel, UserModel
 import requests
 import os
 import decimal
@@ -14,6 +14,7 @@ token =  os.environ.get('IEX_TOKEN')
 @jwt_required()
 def get_stocks(user_id=0):
     if request.method == "GET":
+        user = UserModel.query.filter_by(id=user_id).first()
         account = AccountModel.query.filter_by(user_id=user_id).first()
         if account == None:
             return jsonify(
@@ -22,12 +23,31 @@ def get_stocks(user_id=0):
         
         stocks = StockModel.query.filter_by(account=account).all()
         stock_list = []
+        total = 0
         for stock in stocks:
-            stock_list.append(get_stock_info(stock))
+            stock_info = get_stock_info(stock)
+            stock_list.append(stock_info)
+            total = total + stock_info['value']
         return jsonify({
-            'success': "Stocks retrieved",
+            'id': user_id,
+            'firstName': user.firstname,
+            'balance': str(account.balance),
+            'stocks': stocks,
+            'value': total,
             'stocks': stock_list
         })
+
+def get_stock_info(stock):
+    r = requests.get(url + stock.symbol + '/quote?token=' + token)
+    increase = r.json()['latestPrice'] - r.json()['previousClose'] > 0
+    return {
+        'symbol': stock.symbol,
+        'name': r.json()['companyName'],
+        'price': r.json()['latestPrice'],
+        'shares': stock.shares,
+        'value': get_stock_value(stock.symbol, stock.shares),
+        'increase': increase
+    }
 
 @views.route('/buy', methods=["POST"])
 @jwt_required()
@@ -98,16 +118,4 @@ def sell():
 def get_stock_value(symbol, shares):
     r = requests.get(url + symbol + '/quote?token=' + token)
     return r.json()['latestPrice'] * shares
-
-def get_stock_info(stock):
-    r = requests.get(url + stock.symbol + '/quote?token=' + token)
-    increase = r.json()['latestPrice'] - r.json()['previousClose'] > 0
-    return {
-        'symbol': stock.symbol,
-        'name': r.json()['companyName'],
-        'price': r.json()['latestPrice'],
-        'shares': stock.shares,
-        'value': get_stock_value(stock.symbol, stock.shares),
-        'increase': increase
-    }
 
