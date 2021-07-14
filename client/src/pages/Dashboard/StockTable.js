@@ -1,15 +1,23 @@
 import React from 'react';
-import {Table, Button} from 'react-bootstrap';
+import {Table, Button} from 'react-bootstrap'
+import {useSelector} from 'react-redux'
 
-const StockTable = ({stocks}) => {
+const StockTable = () => {
+    const stocks = useSelector(state => state.userReducer.user.stocks)
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
     const createRows = () => {
         return stocks.map(stock => {
             return <tr>
                     <td>{stock.name}</td>
                     <td>{stock.symbol}</td>
                     <td>{stock.shares}</td>
-                    <td>{stock.price}</td>
-                    <td>{stock.value}</td>
+                    <td>{formatter.format(stock.price)}</td>
+                    <td>{formatter.format(stock.value)}</td>
                     <td>
                         <Button variant="light" size='sm' className="px-3">Sell</Button>
                     </td>
