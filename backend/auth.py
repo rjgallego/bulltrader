@@ -45,8 +45,10 @@ def register():
 
 def login(user, password):
     if check_password_hash(user.hash, password):
+        account = AccountModel.query.filter_by(user_id=user.id).first()
+        stocks=[]
         return jsonify(
-            token=create_access_token(identity=user.id)
+            token=create_access_token(identity=user.id),
         )
     return jsonify(
         error="Invalid password"
