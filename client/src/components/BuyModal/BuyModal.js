@@ -3,34 +3,49 @@ import {Modal, Button, Form} from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import {Row} from 'react-bootstrap'
+import jwt_decode from 'jwt-decode'
 
-const BuyModal = () => {
+const BuyModal = ({setUserInfo}) => {
     const dispatch = useDispatch();
-
-    const options = {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`
-        }
-    }
-
     const availableCash = useSelector(state => state.userReducer.user.balance)
     const show = useSelector(state => state.buyReducer);
 
     const [selectedStock, setSelectedStock] = useState(null)
     const [searchResults, setSearchResults] = useState(null)
+    const [sharesToBuy, setSharesToBuy] = useState(0)
     const [totalCost, setTotalCost] = useState(0.0)
     const [disabled, setDisabled] = useState(true)
     const [error, setError] = useState(null)
+    const [token, setToken] = useState(sessionStorage.getItem('token'))
+
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
     });
 
-    const handleClose = () => {
-        dispatch({
-            type: 'HIDE'
-        })
+    const handleBuy = () => {
+        const userId = jwt_decode(token).sub
+        const data = {
+            symbol: selectedStock.symbol,
+            shares: sharesToBuy,
+            user_id: userId
+        }
+        axios.post('/api/buy', data, options)
+            .then(response => {
+                if(response.error){
+                    setError(response.error)
+                    return
+                }
+                setError(null)
+                setUserInfo()
+                handleClose()
+            }).catch(error => setError(error.response))
     }
 
     const handleSearch = (event) => {
@@ -41,6 +56,7 @@ const BuyModal = () => {
     }
 
     const handleShares = (event) => {
+        setSharesToBuy(parseInt(event.target.value))
         if(event.target.value.length == 0){
             setTotalCost(0.0)
             return
@@ -55,6 +71,12 @@ const BuyModal = () => {
         }
         setDisabled(false)
         setError(null)
+    }
+
+    const handleClose = () => {
+        dispatch({
+            type: 'HIDE'
+        })
     }
 
     const selectStock = (event) => {
@@ -129,7 +151,7 @@ const BuyModal = () => {
             <Modal.Footer>
                 <Button variant="success" 
                         disabled={disabled} 
-                        onClick={handleClose}> Buy </Button>
+                        onClick={handleBuy}> Buy </Button>
             </Modal.Footer>
         </Modal>
     )
