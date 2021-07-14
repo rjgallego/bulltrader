@@ -4,13 +4,10 @@ import ImgCarousel from './ImgCarousel'
 import NavBar from '../../components/NavBar/NavBar'
 import './Home.css'
 import axios from 'axios'
-import {useDispatch} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 
 
 const Home = () => {
-    const dispatch = useDispatch()
-
     const [validated, setValidated] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
