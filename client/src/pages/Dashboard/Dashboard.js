@@ -103,7 +103,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </Container>
-            <BuyModal />
+            <BuyModal setUserInfo={setUserInfo}/>
         </div>
     )
 }
