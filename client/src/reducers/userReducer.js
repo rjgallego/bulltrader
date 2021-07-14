@@ -1,14 +1,10 @@
-function userReducer(state = {}, action){
+function userReducer(state = null, action){
     switch(action.type){
-        case "ADD_USER":
+        case "SET_USER":
             return {
                 ...state,
                 user: action.payload
             };
-        case "UPDATE_USER_STOCKS":
-            return Object.assign({}, state, {
-                stocks: action.payload
-            })
         default:
             return state;
     }
