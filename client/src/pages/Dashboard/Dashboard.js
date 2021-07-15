@@ -86,7 +86,7 @@ const Dashboard = () => {
                 <Row lg={2} className="w-100">
                     <Col>
                         <div id="table-div">
-                            <StockTable />
+                            <StockTable setUserInfo={setUserInfo}/>
                         </div>
                         <Row lg={2}>
                             <Col className="text-center">
