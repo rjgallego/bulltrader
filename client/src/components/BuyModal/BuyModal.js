@@ -42,8 +42,12 @@ const BuyModal = ({setUserInfo}) => {
                     setError(response.error)
                     return
                 }
-                setError(null)
                 setUserInfo()
+                setError(null)
+                setSelectedStock(null)
+                setSearchResults(null)
+                setTotalCost(0.0)
+                setSharesToBuy(0)
                 handleClose()
             }).catch(error => setError(error.response))
     }
@@ -120,8 +124,8 @@ const BuyModal = ({setUserInfo}) => {
                               placeholder="Number of Shares" 
                               className="mt-1"
                               onChange={handleShares}/>
-                    <Form.Label className="mt-3">Total Cost: {formatter.format(totalCost)}</Form.Label>
-                </Form>
+                <Form.Label className="mt-3">Total Cost: {formatter.format(totalCost)}</Form.Label>
+            </Form>
         )
     }
 
