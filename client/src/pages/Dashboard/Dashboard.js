@@ -4,6 +4,7 @@ import SideBar from '../../components/SideBar/SideBar'
 import StockTable from './StockTable'
 import StockChart from './StockChart'
 import BuyModal from '../../components/BuyModal/BuyModal'
+import SellModal from '../../components/SellModal/SellModal'
 import { Container, Row, Col, Button, Spinner} from 'react-bootstrap'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const user = useSelector(state => state.userReducer)
     const [reroute, setReroute] = useState(false)
     const [token, setToken] = useState(sessionStorage.getItem('token'))
+    const [stockToSell, setStockToSell] = useState({})
 
     useEffect(() => {
         setUserInfo()
@@ -86,7 +88,7 @@ const Dashboard = () => {
                 <Row lg={2} className="w-100">
                     <Col>
                         <div id="table-div">
-                            <StockTable setUserInfo={setUserInfo}/>
+                            <StockTable setStockToSell={setStockToSell}/>
                         </div>
                         <Row lg={2}>
                             <Col className="text-center">
@@ -104,6 +106,7 @@ const Dashboard = () => {
                 </Row>
             </Container>
             <BuyModal setUserInfo={setUserInfo}/>
+            <SellModal stock={stockToSell} setUserInfo={setUserInfo}/>
         </div>
     )
 }
