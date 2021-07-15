@@ -87,16 +87,16 @@ def sell():
     if request.method == "POST":
         symbol = request.json["symbol"]
         shares = request.json["shares"]
-        acct_id = request.json["acct_id"]
+        user_id = request.json["user_id"]
 
-        account = AccountModel.query.filter_by(id=acct_id).first()
+        account = AccountModel.query.filter_by(user_id=user_id).first()
         if account == None:
             return jsonify(
                 error="Account does not exist"
             )
 
         account.balance = account.balance + decimal.Decimal(get_stock_value(symbol, shares))        
-        exists = StockModel.query.join(StockModel.account).filter(AccountModel.id==acct_id, StockModel.symbol==symbol).first()
+        exists = StockModel.query.join(StockModel.account).filter(AccountModel.id==account.id, StockModel.symbol==symbol).first()
 
         if exists == None:
             return jsonify(
