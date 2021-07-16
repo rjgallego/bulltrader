@@ -1,8 +1,8 @@
 const buyReducer = (state=false, action) => {
     switch(action.type){
-        case 'SHOW':
+        case 'SHOW_BUY_MODAL':
             return true
-        case 'HIDE':
+        case 'HIDE_BUY_MODAL':
             return false
         default:
             return state;
