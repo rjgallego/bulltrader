@@ -1,38 +1,28 @@
-import React from 'react';
+import React from 'react'
 import './StockBar.css'
+import {useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
 
-const data = [ {
-        symbol: "AAPL",
-        name: "Apple Inc.",
-        shares: 73,
-        value: 10553.61,
-        increase: true
-    }, {
-        symbol: "TEST",
-        name: "Test Inc.",
-        shares: 15,
-        value: 296.32,
-        increase: false
-    }
-]
 
 const StockBar = () => {
+    const stocks = useSelector(state => state.userReducer.user.stocks)
+
     const createStockDivs = () => {
-        return data.map(stock => {
+        return stocks.map(stock => {
             return (
-                <div className="stock-div bg-light py-2">
+                <Link to={`/stock-summary/${stock.symbol}`} 
+                      className="stock-div bg-light py-2 text-dark text-decoration-none">
                     <div className="stock-name">
                         <p className="m-0">{stock.symbol}</p>
-                        <p className="name-text">{stock.name}</p>
                     </div>
                     <div className="shares-text">
                         <p className="shares-number">{stock.shares}</p>
                         <p className="shares">Shares</p>
                     </div>
-                    <div className={`value-div text-light p-2 ${stock.increase ? 'bg-success' : 'bg-danger'}`}>
-                        ${stock.value}
+                    <div className={`price-div text-light p-2 ${stock.increase ? 'bg-success' : 'bg-danger'}`}>
+                        ${stock.price}
                     </div>
-                </div>
+                </Link>
             )
         })
     }
