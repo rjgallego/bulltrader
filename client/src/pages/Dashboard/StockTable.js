@@ -13,13 +13,13 @@ const StockTable = ({setStockToSell}) => {
     const handleClick = (event) => {
         setStockToSell(stocks[event.target.id])
         dispatch({
-            type: 'SHOW_SELL'
+            type: 'SHOW_SELL_MODAL'
         })
     }
 
     const createRows = () => {
         return stocks.map((stock, i) => {
-            return <tr>
+            return <tr key={i}>
                     <td className="overflow-hidden" 
                         style={{whiteSpace: 'nowrap'}}>{stock.name}</td>
                     <td>{stock.symbol}</td>
