@@ -3,10 +3,12 @@ import {Nav} from 'react-bootstrap'
 import {ImMenu3, ImMenu4, ImHome, ImStatsDots, ImExit} from 'react-icons/im';
 import './SideBar.css';
 import StockBar from '../StockBar/StockBar'
+import {useSelector} from 'react-redux'
 
 const SideBar = () => {
     const [visible, setVisible] = useState(false)
     const [sbVisible, setSbVisible] = useState(false)
+    const name = useSelector(state => state.userReducer.user.firstName)
 
     const handleClick = () => {
         setVisible(!visible)
@@ -20,14 +22,14 @@ const SideBar = () => {
             <div id="sidebar-icon">
                 {
                     visible ? 
-                        <ImMenu4 class="menu-icon" size={35} onClick={handleClick} />
-                    :   <ImMenu3 class="menu-icon" size={35} onClick={handleClick}/>
+                        <ImMenu4 className="menu-icon" size={35} onClick={handleClick} />
+                    :   <ImMenu3 className="menu-icon" size={35} onClick={handleClick}/>
                 }
             </div>
             <div className={`sidebar-nav overflow-hidden ${visible ? 'visible' : ''}`}>
                 <Nav id="sidebar-menu" variant="tabs" defaultActiveKey="/dashboard"
                     className="flex-column position-relative float-right pt-2 h-100 bg-light overflow-hidden">
-                    <h5 className="ml-2">Hello, Joe!</h5>
+                    <h5 className="ml-2">Hello, {name}!</h5>
                     <Nav.Link href="/dashboard" className="text-dark pr-5" onMouseOver={hideStockBar}>
                         <ImHome className="mr-3"/> Dashboard
                     </Nav.Link>
