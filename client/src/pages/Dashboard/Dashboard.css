@@ -1,5 +1,5 @@
 #table-div{
-    height: 250px;
+    height: 350px;
     overflow-y: scroll;
 }
 
@@ -9,4 +9,22 @@
 
 #dashboard-container{
     right: 0
+}
+
+.stock-table-button{
+    font-size: 10px;
+}
+
+@media screen and (max-width: 700px) {
+    #stock-pie-chart{
+        display:none;
+    }
+
+    th, td{
+        font-size: 10px;
+    }
+
+    #stock-table, #table-div{
+        width: 90vw;
+    }
 }

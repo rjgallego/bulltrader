@@ -8,17 +8,21 @@ import SellModal from '../../components/SellModal/SellModal'
 import { Container, Row, Col, Button, Spinner} from 'react-bootstrap'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux'
 import { Redirect } from 'react-router-dom';
 
 import './Dashboard.css'
+
+const url = 'http://localhost:5000'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.userReducer)
     const [reroute, setReroute] = useState(false)
-    const [token, setToken] = useState(sessionStorage.getItem('token'))
+    //const [token, setToken] = useState(sessionStorage.getItem('token'))
     const [stockToSell, setStockToSell] = useState({})
+
+    const token = sessionStorage.getItem('token')
 
     useEffect(() => {
         setUserInfo()
@@ -38,25 +42,21 @@ const Dashboard = () => {
             }
         }
 
-        axios.get(`/api/stocks/${userId}`, options)
+        axios.get(`${url}/api/stocks/${userId}`, options)
             .then(response => {
                 dispatch({
                     type: 'SET_USER',
                     payload: response.data
                 })
             }).catch(error => {
-                if(error.response.status == 401) setReroute(true)
+                if(error.response && error.response.status === 401) setReroute(true)
             })
     }
 
     const handleClick = () => {
         dispatch({
-            type: 'SHOW'
+            type: 'SHOW_BUY_MODAL'
         })
-        // dispatch({
-        //     type: 'UPDATE_USER_STOCKS',
-        //     payload: data.stocks
-        // })
     }
 
     if(!sessionStorage.getItem('token')  || reroute){
@@ -80,27 +80,27 @@ const Dashboard = () => {
         <div id="dashboard-div">
             <NavBar />
             <SideBar />
-            <Container id="dashboard-container" className="position-fixed overflow-hidden pt-5 text-light ml-5">
+            <Container id="dashboard-container" className="overflow-hidden pt-5 px-0 text-light">
                 <Row className="d-flex flex-column ml-3">
                     <h1 className="mb-0">{formatter.format(user.user.value)}</h1>
                     <p className="mt-0">Portfolio Value</p>
                 </Row>
-                <Row lg={2} className="w-100">
-                    <Col>
-                        <div id="table-div">
+                <Row lg={2} sm={1} className="w-100 mx-auto">
+                    <Col lg='7'>
+                        <div id="table-div" className="w-100 mx-0 p-0">
                             <StockTable setStockToSell={setStockToSell}/>
                         </div>
-                        <Row lg={2}>
+                        <Row lg={2} className='mx-auto'>
                             <Col className="text-center">
                                 <p className="mb-0 mt-3">Available Cash</p>
                                 <h2 className="mt-0">{formatter.format(user.user.balance)}</h2>
                             </Col>
-                            <Col className="text-center d-flex align-items-center">
-                                <Button variant="success" className="w-75 h-75" onClick={handleClick}>Buy</Button>
+                            <Col className="text-center d-flex align-items-center p-0">
+                                <Button id="buy-button" variant="success" className="w-75 h-75" onClick={handleClick}>Buy</Button>
                             </Col>
                         </Row>
                     </Col>
-                    <Col>
+                    <Col id="stock-pie-chart" lg='5'>
                         <StockChart />
                     </Col>
                 </Row>
