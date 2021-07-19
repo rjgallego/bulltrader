@@ -6,7 +6,7 @@ import c3 from './c3.jpg';
 
 const ImgCarousel = () => {
     return (
-        <Carousel fade>
+        <Carousel id="carousel" fade>
             <Carousel.Item>
                 <img
                     className="d-block"
