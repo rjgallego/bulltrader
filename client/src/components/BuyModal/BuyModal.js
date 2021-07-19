@@ -5,6 +5,8 @@ import axios from 'axios'
 import {Row} from 'react-bootstrap'
 import jwt_decode from 'jwt-decode'
 
+const url = 'http://localhost:5000'
+
 const BuyModal = ({setUserInfo}) => {
     const dispatch = useDispatch();
     const availableCash = useSelector(state => state.userReducer.user.balance)
@@ -16,7 +18,8 @@ const BuyModal = ({setUserInfo}) => {
     const [totalCost, setTotalCost] = useState(0.0)
     const [disabled, setDisabled] = useState(true)
     const [error, setError] = useState(null)
-    const [token, setToken] = useState(sessionStorage.getItem('token'))
+    // const [token, setToken] = useState(sessionStorage.getItem('token'))
+    const token = sessionStorage.getItem('token')
 
     const options = {
         headers: {
@@ -36,7 +39,7 @@ const BuyModal = ({setUserInfo}) => {
             shares: sharesToBuy,
             user_id: userId
         }
-        axios.post('/api/buy', data, options)
+        axios.post(url + '/api/buy', data, options)
             .then(response => {
                 if(response.error){
                     setError(response.error)
@@ -53,7 +56,7 @@ const BuyModal = ({setUserInfo}) => {
     }
 
     const handleSearch = (event) => {
-        axios.get(`api/search/${event.target.value}`, options)
+        axios.get(`${url}/api/search/${event.target.value}`, options)
             .then(response => {
                 setSearchResults(response.data.search_results)
             })
@@ -61,7 +64,7 @@ const BuyModal = ({setUserInfo}) => {
 
     const handleShares = (event) => {
         setSharesToBuy(parseInt(event.target.value))
-        if(event.target.value.length == 0){
+        if(event.target.value.length === 0){
             setTotalCost(0.0)
             return
         }
@@ -79,12 +82,12 @@ const BuyModal = ({setUserInfo}) => {
 
     const handleClose = () => {
         dispatch({
-            type: 'HIDE'
+            type: 'HIDE_BUY_MODAL'
         })
     }
 
     const selectStock = (event) => {
-        axios.get(`/api/stock/${event.target.id}`, options)
+        axios.get(`${url}/api/stock/${event.target.id}`, options)
             .then(response => {
                 setSelectedStock({
                     symbol: response.data.stock_info.symbol,
