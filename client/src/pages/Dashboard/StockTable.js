@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Table, Button} from 'react-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
 
@@ -20,8 +20,7 @@ const StockTable = ({setStockToSell}) => {
     const createRows = () => {
         return stocks.map((stock, i) => {
             return <tr key={i}>
-                    <td className="overflow-hidden" 
-                        style={{whiteSpace: 'nowrap'}}>{stock.name}</td>
+                    <td>{stock.name}</td>
                     <td>{stock.symbol}</td>
                     <td>{stock.shares}</td>
                     <td>{formatter.format(stock.price)}</td>
@@ -37,14 +36,14 @@ const StockTable = ({setStockToSell}) => {
     }
 
     return (
-            <Table variant="dark" size={'sm'} style={{tableLayout : 'fixed'}}>
+            <Table id="stock-table" responsive variant="dark" size='sm'>
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Symbol</th>
                         <th>Shares</th>
                         <th>Price</th>
-                        <th>Total Value</th>
+                        <th>Value</th>
                         <th></th>
                     </tr>
                 </thead>
