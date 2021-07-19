@@ -1,0 +1,13 @@
+@media screen and (max-width: 700px) {
+    p{
+        font-size: 12px
+    }
+
+    h6{
+        font-size: 16px;
+    }
+
+    #summary-container{
+        background-color: black;
+    }
+}
