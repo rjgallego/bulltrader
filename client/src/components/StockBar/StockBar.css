@@ -4,6 +4,7 @@
     z-index: 0;
     margin: 0;
     top: 40px;
+    overflow-y: scroll
 }
 .stock-div{
     display: grid;
@@ -43,4 +44,36 @@
     font-size: 0.85em;
     text-align: center;
     border-radius: 5px;
+}
+
+@media screen and (max-width: 700px) {
+    #stockbar-div{
+        width: 100%;
+    }
+
+    .stock-div{
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr;
+        align-content: center;
+        justify-content: center;
+        width: 90%;
+        border-bottom: 1px solid gray;
+    }
+
+    .price-div{
+        width: 80%; 
+        font-size: 1em;
+        text-align: center;
+        border-radius: 5px;
+        margin: auto;
+    }
+
+    .shares-text{
+        display: none;
+    }
+
+    .stock-bar-link{
+        height: 10vh;
+    }
 }
