@@ -5,6 +5,7 @@ from .models import StockModel, AccountModel, UserModel
 import requests
 import os
 import decimal
+import json
 
 views = Blueprint('views', __name__)
 url = os.environ.get('IEX_URL')
@@ -138,3 +139,18 @@ def get_stock_value(symbol, shares):
     r = requests.get(url + '/stock/' + symbol + '/quote?token=' + token)
     return r.json()['latestPrice'] * shares
 
+@views.route('/stock/<symbol>/history', methods=['GET'])
+@jwt_required()
+def get_stock_history(symbol=""):
+    if request.method == 'GET':
+        r = requests.get(url + '/stock/' + symbol + '/chart/6m?token=' + token)
+        result = json.loads(r.text)
+        stock_history = []
+        for stock in result:
+            stock_history.append({
+                'date': stock['date'],
+                'price': stock['close']
+            })
+        return jsonify({
+            'stock_history': stock_history
+        })
