@@ -6,6 +6,7 @@ import './Home.css'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 
+const url = 'http://localhost:5000'
 
 const Home = () => {
     const [validated, setValidated] = useState(false);
@@ -33,7 +34,7 @@ const Home = () => {
             password: password
         }
 
-        axios.post('/api/login', data)
+        axios.post(url+'/api/login', data)
             .then(response => {
                 if(response.data.error){
                     setErrorMessage(response.data.error)
@@ -55,11 +56,11 @@ const Home = () => {
             <NavBar/>
             <div id="login-container">
                 <Container>
-                    <Row lg={2}>
+                    <Row lg={2} sm={1}>
                         <Col>
                             <ImgCarousel />
                         </Col>
-                        <Col>
+                        <Col sm={2}>
                             <Form noValidate validated={validated} onSubmit={handleSubmit}
                                 className='bg-light h-100 d-flex flex-column justify-content-center'>
                                 <h2 className='text-center mb-5'>Welcome to Bull Trader</h2>
