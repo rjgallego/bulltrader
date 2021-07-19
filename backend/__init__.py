@@ -1,6 +1,7 @@
 from flask import Flask, render_template, send_from_directory, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from dotenv import load_dotenv
 import os
@@ -16,6 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')    
 
 db = SQLAlchemy(app)
+
+CORS(app)
 
 from .auth import auth
 from .views import views
@@ -35,4 +38,8 @@ def dashboard_page():
 
 @app.route('/register')
 def register_page():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/stock-summary/<symbol>')
+def stock_summary_page(symbol=""):
     return send_from_directory(app.static_folder, 'index.html')
