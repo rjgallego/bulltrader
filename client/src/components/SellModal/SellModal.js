@@ -4,15 +4,19 @@ import jwt_decode from 'jwt-decode'
 import { Modal, Button, Row, Form } from 'react-bootstrap'
 import axios from 'axios'
 
+const url = 'http://localhost:5000'
 
 const SellModal = ({stock, setUserInfo}) => {
     const dispatch = useDispatch()
     const show = useSelector(state => state.sellReducer);
+
     const [disabled, setDisabled] = useState(true)
-    const [token, setToken] = useState(sessionStorage.getItem('token'))
+    //const [token, setToken] = useState(sessionStorage.getItem('token'))
     const [totalValue, setTotalValue] = useState(0.0)
     const [sharesToSell, setSharesToSell] = useState(0)
     const [error, setError] = useState(null)
+
+    const token = sessionStorage.getItem('token')
 
     const options = {
         headers: {
@@ -27,7 +31,7 @@ const SellModal = ({stock, setUserInfo}) => {
 
     const handleClose = () => {
         dispatch({
-            type: 'HIDE_SELL'
+            type: 'HIDE_SELL_MODAL'
         })
     }
 
@@ -56,7 +60,7 @@ const SellModal = ({stock, setUserInfo}) => {
             shares: sharesToSell,
             user_id: userId
         }
-        axios.post('/api/sell', data, options)
+        axios.post(url + '/api/sell', data, options)
             .then(response => {
                 if(response.error){
                     setError(response.error)
