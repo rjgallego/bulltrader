@@ -4,11 +4,12 @@ import {ImMenu3, ImMenu4, ImHome, ImStatsDots, ImExit} from 'react-icons/im';
 import './SideBar.css';
 import StockBar from '../StockBar/StockBar'
 import {useSelector} from 'react-redux'
+import { Spinner } from 'react-bootstrap';
 
 const SideBar = () => {
     const [visible, setVisible] = useState(false)
     const [sbVisible, setSbVisible] = useState(false)
-    const name = useSelector(state => state.userReducer.user.firstName)
+    const name = useSelector(state => state.userReducer)
 
     const handleClick = () => {
         setVisible(!visible)
@@ -16,6 +17,16 @@ const SideBar = () => {
     }
     const handleHover = () => setSbVisible(true)
     const hideStockBar = () => setSbVisible(false)
+
+    if(!name){
+        return (
+            <div className="h-100 w-100 d-flex justify-content-center align-items-center">
+                <Spinner animation="border" 
+                    role="status" 
+                    variant="light"/>
+            </div>
+        )
+    }
 
     return (
         <div id="sidebar-div" className="position-fixed">
@@ -29,7 +40,7 @@ const SideBar = () => {
             <div className={`sidebar-nav overflow-hidden ${visible ? 'visible' : ''}`}>
                 <Nav id="sidebar-menu" variant="tabs" defaultActiveKey="/dashboard"
                     className="flex-column position-relative float-right pt-2 h-100 bg-light overflow-hidden">
-                    <h5 className="ml-2">Hello, {name}!</h5>
+                    <h5 className="ml-2">Hello, {name.user.firstName}!</h5>
                     <Nav.Link href="/dashboard" className="text-dark pr-5" onMouseOver={hideStockBar}>
                         <ImHome className="mr-3"/> Dashboard
                     </Nav.Link>
