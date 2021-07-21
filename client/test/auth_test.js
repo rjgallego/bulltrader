@@ -1,6 +1,5 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
-//import fs from 'fs'
 
 chai.use(chaiHttp)
 const url = 'http://localhost:5000'
