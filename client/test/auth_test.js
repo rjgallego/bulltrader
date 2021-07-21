@@ -5,7 +5,7 @@ chai.use(chaiHttp)
 const url = 'http://localhost:5000'
 const should = chai.should()
 
-describe('Register a new user and login', () => {
+describe('test new user registration and login functionality', () => {
     it('should return error message that email does not exist', (done) => {
         chai.request(url)
             .post('/api/login')
