@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from backend import db
 from flask_jwt_extended import jwt_required
 from .models import StockModel, AccountModel, UserModel
@@ -18,9 +18,9 @@ def get_stocks(user_id=0):
         user = UserModel.query.filter_by(id=user_id).first()
         account = AccountModel.query.filter_by(user_id=user_id).first()
         if account == None:
-            return jsonify(
-                error="User account does not exist"
-            )
+            return make_response(jsonify({
+                'error': 'User account does not exist'
+            }), 404)
         
         stocks = StockModel.query.filter_by(account=account).all()
         stock_list = []
@@ -33,7 +33,7 @@ def get_stocks(user_id=0):
             'id': user_id,
             'firstName': user.firstname,
             'balance': str(account.balance),
-            'stocks': stocks,
+            # 'stocks': stocks,
             'value': total,
             'stocks': stock_list
         })
@@ -60,9 +60,9 @@ def buy():
 
         account = AccountModel.query.filter_by(user_id=user_id).first()
         if account == None:
-            return jsonify(
-                error="Account does not exist"
-            )
+            return make_response(jsonify({
+                'error': 'Account does not exist'
+            }), 404)
         
         account.balance = account.balance - decimal.Decimal(get_stock_value(symbol, shares))
         db.session.commit()
@@ -92,17 +92,17 @@ def sell():
 
         account = AccountModel.query.filter_by(user_id=user_id).first()
         if account == None:
-            return jsonify(
-                error="Account does not exist"
-            )
+            return make_response(jsonify({
+                'error': 'Account does not exist'
+            }),404)
 
         account.balance = account.balance + decimal.Decimal(get_stock_value(symbol, shares))        
         exists = StockModel.query.join(StockModel.account).filter(AccountModel.id==account.id, StockModel.symbol==symbol).first()
 
         if exists == None:
-            return jsonify(
-                error="User does not own any stock with symbol: " + symbol
-            )
+            return make_response(jsonify({
+                'error': 'User does not own any stock with symbol: ' + symbol
+            }),404)
         
         if exists.shares > shares:
             exists.shares = exists.shares - shares
@@ -138,7 +138,7 @@ def get_stock(symbol=""):
 def get_stock_value(symbol, shares):
     r = requests.get(url + '/stock/' + symbol + '/quote?token=' + token)
     return r.json()['latestPrice'] * shares
-
+    
 @views.route('/stock/<symbol>/history', methods=['GET'])
 @jwt_required()
 def get_stock_history(symbol=""):
