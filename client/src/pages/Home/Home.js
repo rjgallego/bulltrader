@@ -41,7 +41,8 @@ const Home = () => {
 
                 sessionStorage.setItem("token", response.data.token)
                 setReroute(true)
-
+            }).catch(error => {
+                setErrorMessage(error.response.data.error)
             })
     }
 
