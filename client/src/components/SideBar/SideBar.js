@@ -4,12 +4,14 @@ import {ImMenu3, ImMenu4, ImHome, ImStatsDots, ImExit} from 'react-icons/im';
 import './SideBar.css';
 import StockBar from '../StockBar/StockBar'
 import {useSelector} from 'react-redux'
-import { Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap'
+import {Redirect} from 'react-router-dom'
 
 const SideBar = () => {
     const [visible, setVisible] = useState(false)
     const [sbVisible, setSbVisible] = useState(false)
     const name = useSelector(state => state.userReducer)
+    const [reroute, setReroute] = useState(false)
 
     const handleClick = () => {
         setVisible(!visible)
@@ -17,6 +19,14 @@ const SideBar = () => {
     }
     const handleHover = () => setSbVisible(true)
     const hideStockBar = () => setSbVisible(false)
+    const handleLogout = () => {
+        sessionStorage.removeItem('token')
+        setReroute(true)
+    }
+
+    if(reroute){
+        return <Redirect to="/" /> 
+    }
 
     if(!name){
         return (
@@ -47,7 +57,7 @@ const SideBar = () => {
                     <Nav.Link eventKey="link-1" className="text-dark pr-5" onMouseOver={handleHover}>
                         <ImStatsDots className="mr-3"/> My Stocks
                     </Nav.Link>
-                    <Nav.Link eventKey="link-2" className="text-dark pr-5" onMouseOver={hideStockBar}>
+                    <Nav.Link eventKey="link-2" className="text-dark pr-5" onMouseOver={hideStockBar} onClick={handleLogout}>
                         <ImExit className="mr-3"/> Logout
                     </Nav.Link>
                 </Nav>
