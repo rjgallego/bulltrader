@@ -31,7 +31,7 @@ const StockChart = () => {
                     easing: 'linear',
                     duration: 1500,
                 },
-                colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+                colors: ['#B1F2B3', '#7AE18d', '#5ad06a', '#00A100', '#00B100', '#009200', '#007900', '#005B00'],
                 backgroundColor: '000000',
                 titleTextStyle: {italic: false, bold: true, color: 'FFFFFF', fontSize:'30px'},
                 legend: {position: 'none'},
