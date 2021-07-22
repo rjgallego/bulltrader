@@ -11,8 +11,6 @@ import {useDispatch} from 'react-redux'
 
 import './StockSummary.css'
 
-const url = 'http://localhost:5000'
-
 const StockSummary = () => {
     const { symbol } = useParams()
     const token = sessionStorage.getItem('token')
@@ -48,7 +46,7 @@ const StockSummary = () => {
             }
         }
 
-        axios.get(`${url}/api/stocks/${userId}`, options)
+        axios.get(`/api/stocks/${userId}`, options)
             .then(response => {
                 dispatch({
                     type: 'SET_USER',
@@ -60,7 +58,7 @@ const StockSummary = () => {
     }
 
     const getStockHistory = () => {
-        axios.get(`${url}/api/stock/${symbol}/history`, options)
+        axios.get(`/api/stock/${symbol}/history`, options)
             .then(response => {
                 const historyList = []
                 historyList.push(['x', 'Price'])

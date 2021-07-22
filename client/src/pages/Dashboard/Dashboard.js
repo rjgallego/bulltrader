@@ -13,16 +13,13 @@ import { Redirect } from 'react-router-dom';
 
 import './Dashboard.css'
 
-const url = 'http://localhost:5000'
-
 const Dashboard = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.userReducer)
     const [reroute, setReroute] = useState(false)
-    //const [token, setToken] = useState(sessionStorage.getItem('token'))
     const [stockToSell, setStockToSell] = useState({})
 
-    const token = sessionStorage.getItem('token')
+    let token = sessionStorage.getItem('token')
 
     useEffect(() => {
         setUserInfo()
@@ -42,7 +39,7 @@ const Dashboard = () => {
             }
         }
 
-        axios.get(`${url}/api/stocks/${userId}`, options)
+        axios.get(`/api/stocks/${userId}`, options)
             .then(response => {
                 dispatch({
                     type: 'SET_USER',

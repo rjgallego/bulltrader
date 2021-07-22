@@ -6,8 +6,6 @@ import './Home.css'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 
-const url = 'http://localhost:5000'
-
 const Home = () => {
     const [validated, setValidated] = useState(false);
     const [email, setEmail] = useState("");
@@ -34,7 +32,7 @@ const Home = () => {
             password: password
         }
 
-        axios.post(url+'/api/login', data)
+        axios.post('/api/login', data)
             .then(response => {
                 if(response.data.error){
                     setErrorMessage(response.data.error)
