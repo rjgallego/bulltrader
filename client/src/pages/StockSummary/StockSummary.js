@@ -73,7 +73,7 @@ const StockSummary = () => {
     }
 
     const getStockData = () => {
-        axios.get(`${url}/api/stock/${symbol}`, options)
+        axios.get(`/api/stock/${symbol}`, options)
             .then(response => setStockInfo(response.data.stock_info))
             .catch(error => {
                 if(error.response.status === 401) setReroute(true)
