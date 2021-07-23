@@ -122,6 +122,7 @@ There several unit tests written for testing the functionality of each of the ro
 Each of the test are written using Mocha / Chai and are stored in separate files under the client/test folder. Note that the development server must be started as Chai will try to call each of the endpoints to ensure a correct response. The server can be started with the below two commands run from the project's root folder:
 - pipenv shell
 - python app.py
+
 In order to run the tests locally, open a separate terminal from the one running the server and enter the following commands:
 - cd client
 - npm run test
