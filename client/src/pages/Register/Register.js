@@ -57,6 +57,8 @@ const Register = () => {
                 } else {
                     setRedirect(true)
                 }
+            }).catch(error => {
+                setErrorMessage(error.response.data.error)
             })
 
     }
