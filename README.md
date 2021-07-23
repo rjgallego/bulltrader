@@ -126,6 +126,7 @@ Each of the test are written using Mocha / Chai and are stored in separate files
 In order to run the tests locally, open a separate terminal from the one running the server and enter the following commands:
 - cd client/test
 - npm run test
+
 The output will be displayed in the terminal, and will display each test either with a 'Pass' status or will display an error if there is unexpected output.
 
 ![](./screenshots/tests.gif)
