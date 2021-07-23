@@ -108,23 +108,23 @@ Start back-end
     - In a command line terminal, open a pipenv shell with the following command: pipenv shell
     - Open a Python terminal by entering the following command: 'python'
     - Add the following commands separately, hitting Enter between each command:
-        > from backend import db
-        > db.create_all()
+        - from backend import db
+        - db.create_all()
     - Open PGAdmin 4 tool and validate that tables have been created in your database
 - From the root folder, start the application server: `python app.py`
 - View* the local web application at http://localhost:5000/
 
-* Note: the React front-end is served by the Flask server from the client/build folder, so in the case of any front-end updates React must be re-built in order to view the changes in the browser. This can be done from the client folder by running the following command: npm run build.
+Note: the React front-end is served by the Flask server from the client/build folder, so in the case of any front-end updates React must be re-built in order to view the changes in the browser. This can be done from the client folder by running the following command: npm run build.
 
 ## Testing
 There several unit tests written for testing the functionality of each of the routes defined in this project. These tests will validate that a user can be registered and login, can buy and sell stocks, can retrieve the stocks in their portfolio, and the backend connection to the IEX API can be established for pulling stock information. There are also tests for invalid requests, such as an incorrect password or trying to create a new account for an existing email. These unit tests can be very helpful during the development process to ensure existing functionality is not affected by recent changes.
 
 Each of the test are written using Mocha / Chai and are stored in separate files under the client/test folder. Note that the development server must be started as Chai will try to call each of the endpoints to ensure a correct response. The server can be started with the below two commands run from the project's root folder:
-    > pipenv shell
-    > python app.py
+- pipenv shell
+- python app.py
 In order to run the tests locally, open a separate terminal from the one running the server and enter the following commands:
-    > cd client
-    > npm run test
+- cd client
+- npm run test
 The output will be displayed in the terminal, and will display each test either with a 'Pass' status or will display an error if there is unexpected output.
 
 ![](./screenshots/tests.gif)
