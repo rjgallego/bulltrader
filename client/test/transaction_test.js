@@ -178,9 +178,14 @@ describe('test user buy/sell transations and retrieving user information', () =>
                 res.body.firstName.should.equal(testUser.firstName)
 
                 res.body.should.have.property('balance')
-                res.body.balance.should.equal(balance.toFixed(2))
+
+                const returnedBalance = parseInt(res.body.balance)
+                returnedBalance.should.be.closeTo(parseInt(balance), 1)
+
                 res.body.should.have.property('value')
-                res.body.value.should.equal(parseFloat(value.toFixed(1)))
+
+                const returnedValue = parseInt(res.body.value)
+                returnedValue.should.equal(parseInt(value))
 
                 res.body.should.have.property('stocks')
                 res.body.stocks.should.be.a('array')
