@@ -64,7 +64,7 @@ def login(user, password):
         account = AccountModel.query.filter_by(user_id=user.id).first()
         stocks=[]
         return jsonify(
-            token=create_access_token(identity=user.id),
+            token=create_access_token(identity=user.id)
         )
     return make_response(jsonify({
         "error": "Invalid password"
