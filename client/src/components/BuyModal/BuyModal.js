@@ -43,11 +43,6 @@ const BuyModal = ({setUserInfo}) => {
                     return
                 }
                 setUserInfo()
-                setError(null)
-                setSelectedStock(null)
-                setSearchResults(null)
-                setTotalCost(0.0)
-                setSharesToBuy(0)
                 handleClose()
             }).catch(error => setError(error.response))
     }
@@ -78,6 +73,11 @@ const BuyModal = ({setUserInfo}) => {
     }
 
     const handleClose = () => {
+        setError(null)
+        setSelectedStock(null)
+        setSearchResults(null)
+        setTotalCost(0.0)
+        setSharesToBuy(0)
         dispatch({
             type: 'HIDE_BUY_MODAL'
         })
