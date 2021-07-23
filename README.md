@@ -21,20 +21,20 @@ Once the registration form is submitted, the user will automatically be redirect
 ![](./screenshots/register.gif)
 
 ### Dashboard Page
- The Dashboard is the home page for the currently signed-in user. It will display the list of stocks and their detailed currently owned by the user, the total value of the portfolio, remaining cash balance, and a summary chart outlining the percentage each stock takes up in the portfolio. The user has the option to sell each stock currently in their portfolio, or they can buy any new stock with their remaining balance.
+ The Dashboard is the home page for the currently signed-in user. It will display the list of stocks currently owned by the user and their details, the total value of the portfolio, remaining cash balance, and a summary chart outlining the percentage each stock takes up in the portfolio. The user has the option to sell any stock currently in their portfolio, or they can buy any new stock with their remaining balance.
 
 ![](./screenshots/dashboard.gif)
 
 ### Stock Summary Page
-Each of the stock within the user's portfolio has it's own summary page, which displays more details about that specific stock, such as the current price, market cap, latest closing price, current exchange, etc. There is also a graph outlining the progression of the stock's price over the past six months. This page is meant to give the user more insight on the stocks they own, and may provide some insight to better manage the portfolio.
+Each of the stocks within the user's portfolio has it's own summary page, which displays more details about that specific stock such as the current price, market cap, latest closing price, current exchange, etc. There is also a graph outlining the progression of the stock's price over the past six months. This page is meant to give the user more insight on the stocks they own, and may provide some insight to better manage the portfolio.
 
 ![](./screenshots/summary.gif)
 
 ## Tools + Technologies
 ### Front-End
-The front-end of this project is built in React using create-react-app. Most of the components are created using the react-bootstrap package, and styling is also done using responsive Bootstrap classes as well as CSS. Bootstrap also provides the validation for the Login and Sign-up forms to confirm valid values have been entered before submitting.
+The front-end of this project is built in React using create-react-app. Most of the components are created using the react-bootstrap package, and styling is also done using responsive Bootstrap classes as well as CSS. Bootstrap also provides the validation for the Login and Register forms to confirm valid values have been entered before submitting.
 
-The charts on the Dashboard and Stock Summary pages are created using Google Charts for react (react-google-charts), and available to provide a visual display of the data from the back-end.
+The charts on the Dashboard and Stock Summary pages are created using Google Charts for react (react-google-charts), and are used to provide a visual display of the stock data from the back-end.
 
 Additional Resources:
 - React-bootstrap: https://react-bootstrap.github.io/
@@ -57,17 +57,17 @@ Additional Resources:
 - Flask-JWT-Extended: https://flask-jwt-extended.readthedocs.io/en/stable/index.html
 
 #### IEX Cloud
-The Flask server also handles communication with IEX, an open source API available for building financial applications. All of the stock information (prices, stock symbols, etc) are pulled directly from IEX instead of storing locally in the database. IEX provides a /quote for pulling information based on the stock symbol, or you can use their /search endpoint to search for different stocks that match a search string, which is implemented to allow the user to search when buying a stock.
+The Flask server also handles communication with IEX, an open source API available for building financial applications. All of the stock information (prices, stock symbols, etc) are pulled directly from IEX instead of storing locally in the database. IEX provides a /quote endpoint for pulling information based on the stock symbol, or you can use their /search endpoint to search for different stocks that match a search string, which is implemented to allow the user to search the market when buying a stock.
 
 Additional Resources: 
 - IEX Cloud: https://www.iexcloud.io/
 
 #### Postgres
-The database for this project is created using Postgres, and communicates with the back-end routes using the Flask extension flask_sqlalchemy. In the server configuration the database URI is defined as an environment variable which allows the server to connect. Once this is done, communication can be established with the database by using the SQLAlchemy models defined in the backend/models.py file, which defines the number and type of each column in the associated table (users, accounts, or stocks). From there the SQLAlchemy models contain a query function that are used to pull data from the specified table, including filters if needed. 
+The database for this project is created using Postgres, and communicates with the back-end routes using the Flask extension flask_sqlalchemy. In the server configuration the database URI is defined as an environment variable which allows the server to connect. Once this is done, communication can be established with the database by using the SQLAlchemy models defined in the backend/models.py file, which defines the number and type of each column in the associated table (users, accounts, and stocks). From there the SQLAlchemy models contain a query function that are used to pull data from the specified table, including filters if needed. 
 
-For development, a local database is used by installing Postgres locally and using the SQLAlchemy function create_all(), which will create the database tables and columns and their relationships based on the definitions in the backend/models.py file. From there the local URI is added to the .env file for the server to use. 
+For development, a local database is used by installing Postgres locally, then the local URI is added to the .env file so the server can connect to it. SQLAlchemy includes a create_all() function, which will create the database tables and columns with their relationships based on the definitions in the backend/models.py file.
 
-For production deployment, Heroku includes a Postgres add-on which will provide the associated application with a database and automatically create an environment variable with the database's URI information.
+For production deployment, Heroku includes a Postgres add-on which will provide the associated application with a database and automatically create an environment variable with the database's URI information. Tables in this database can also be created using SQLAlchemy's create_all() method.
 
 Additional Resources:
 - Flask-SQLAlchemy: https://flask-sqlalchemy.palletsprojects.com/en/2.x/
@@ -101,13 +101,16 @@ Start back-end
 - Add variable SECRET_KEY and set it to any random string
 - Add variable JWT_SECRET and set it to any random string
 - Add variable ENV and set it to 'dev' (without quotation marks)
+- Add variable IEX_TOKEN and set it to the token provided with your IEX account
+    - if you don't have an IEX account, you can create one here: https://iexcloud.io/cloud-login?r=https%3A%2F%2Fwww.iexcloud.io%2Fconsole%2F#/register
+- Add variable IEX_URL and set it to 'https://cloud.iexapis.com/stable' (without quotation marks)
 - Create the required tables in the database
     - In a command line terminal, open a pipenv shell with the following command: pipenv shell
     - Open a Python terminal by entering the following command: 'python'
     - Add the following commands separately, hitting Enter between each command:
-        >>> from backend import db
-        >>> db.create_all()
-    - Open PGAdmin tool and validate that tables have been created in your database
+        > from backend import db
+        > db.create_all()
+    - Open PGAdmin 4 tool and validate that tables have been created in your database
 - From the root folder, start the application server: `python app.py`
 - View* the local web application at http://localhost:5000/
 
@@ -116,7 +119,7 @@ Start back-end
 ## Testing
 There several unit tests written for testing the functionality of each of the routes defined in this project. These tests will validate that a user can be registered and login, can buy and sell stocks, can retrieve the stocks in their portfolio, and the backend connection to the IEX API can be established for pulling stock information. There are also tests for invalid requests, such as an incorrect password or trying to create a new account for an existing email. These unit tests can be very helpful during the development process to ensure existing functionality is not affected by recent changes.
 
-Each of the test are written using Mocha / Chai and are stored in separate files under the client/test folder. Note that the development server must be started Chai will try to call each of the endpoints to ensure correct response. The server can be started with the below two commands run from the project's root folder:
+Each of the test are written using Mocha / Chai and are stored in separate files under the client/test folder. Note that the development server must be started as Chai will try to call each of the endpoints to ensure a correct response. The server can be started with the below two commands run from the project's root folder:
     > pipenv shell
     > python app.py
 In order to run the tests locally, open a separate terminal from the one running the server and enter the following commands:
